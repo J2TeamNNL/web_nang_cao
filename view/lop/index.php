@@ -1,9 +1,11 @@
 <h1>
-    Danh sách sinh viên
+    Danh sách lớp
 </h1>
-<a href="?action=create">
-    Thêm sinh viên
+
+<a href="?action=create&controller=lop">
+    Thêm
 </a>
+
 <table border="1" width="100%">
     <tr>
         <th>Mã</th>
@@ -16,12 +18,12 @@
             <td><?php echo $each['ma'] ?></td>
             <td><?php echo $each['ten'] ?></td>
             <td>
-                <a href="?action=edit&ma=<?php echo $each['ma'] ?>">
+                <a href="?action=edit&controller=lop&ma=<?php echo $each['ma'] ?>">
                     Sửa
                 </a>
             </td>
             <td>
-                <a href="?action=delete&ma=<?php echo $each['ma'] ?>">
+                <a href="?action=delete&controller=lop&ma=<?php echo $each['ma'] ?>">
                     Xoá
                 </a>
             </td>
