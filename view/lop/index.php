@@ -1,9 +1,5 @@
-<h1>
-    Danh sách lớp
-</h1>
-
-<a href="?action=create&controller=lop">
-    Thêm
+<a href="?action=create">
+    Thêm1
 </a>
 
 <table border="1" width="100%">
@@ -13,20 +9,20 @@
         <th>Sửa</th>
         <th>Xoá</th>
     </tr>
-    <?php foreach ($result as $each){ ?>
+    <?php foreach($arr as $each): ?>
         <tr>
-            <td><?php echo $each['ma'] ?></td>
-            <td><?php echo $each['ten'] ?></td>
+            <td><?php echo $each->show_ma() ?></td>
+            <td><?php echo $each->get_ho_ten() ?></td>
             <td>
-                <a href="?action=edit&controller=lop&ma=<?php echo $each['ma'] ?>">
+                <a href="?action=edit&ma=<?php echo $each->get_ma() ?>">
                     Sửa
                 </a>
             </td>
             <td>
-                <a href="?action=delete&controller=lop&ma=<?php echo $each['ma'] ?>">
+                <a href="?action=delete&ma=<?php echo $each->get_ma() ?>">
                     Xoá
                 </a>
             </td>
         </tr>
-    <?php } ?>
+    <?php endforeach; ?>
 </table>

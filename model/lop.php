@@ -1,52 +1,120 @@
 <?php
 
-require_once 'model/connect.php';
+require 'model/Connect.php';
 
-function lop_index(){
-    $connect = connect();
-    $sql = "select * from lop";
-    $result = mysqli_query($connect, $sql);
-    mysqli_close($connect);
+class Lop
+{
+    private int $ma;
+    private string $ho;
+    private string $ten;
 
-    return $result;
-}
+    public function get_ma()
+    {
+        return $this->ma;
+    }
 
-function lop_store($ten){
-    $connect = connect();
-    $sql = "insert into lop (ten)
-        values ('$ten')";
-    mysqli_query($connect, $sql);
-    mysqli_close($connect);
-}
+    public function show_ma()
+    {
+        return '#' . $this->ma;
+    }
 
-function lop_edit($ma){
-    $connect = connect();
-    $sql = "select * from lop
+    public function set_ma($var)
+    {
+        $this->ma = $var;
+    }
+
+    public function get_ho()
+    {
+        return $this->ho;
+    }
+
+    public function set_ho($var)
+    {
+        $this->ho = 'Nguyễn ' .$var;
+    }
+
+    public function get_ten()
+    {
+        return $this->ten;
+    }
+
+    public function set_ten($var)
+    {
+        $this->ten = $var;
+    }
+
+    public function get_ho_ten()
+    {
+        return $this->ho . '.' . $this->ten;
+    }
+
+    public function all()
+    {
+        $sql = "select * from lop";
+        $result = (new Connect())->select($sql);
+
+        $arr = [];
+        foreach ($result as $row){
+            $object = new self();
+            $object->set_ma($row['ma']);
+            $object->set_ho($row['ho']);
+            $object->set_ten($row['ten']);
+
+            $arr[] = $object;
+        }
+
+        return $arr;
+    }
+
+    public function create($ho, $ten): void
+    {
+        $object = new self();
+        $object->set_ho($ho);
+        $object->set_ten($ten);
+
+
+        $sql = "insert into lop (ho, ten)
+                values('{$object->ho}','{$object->ten}')";
+        (new Connect())->execute($sql);
+    }
+
+    public function find($ma)
+    {
+        $sql = "select * from lop
+        where ma = '$ma'";
+        $result = (new Connect())->select($sql);
+        $row = mysqli_fetch_array($result);
+
+        $object = new self();
+        $object->set_ma($row['ma']);
+        $object->set_ho($row['ho']);
+        $object->set_ten($row['ten']);
+
+        return $object;
+    }
+
+    public function update($ma, $ho, $ten): void
+    {
+        $object = new self();
+        $object->set_ma($ma);
+        $object->set_ho($ho);
+        $object->set_ten($ten);
+
+        $sql = "update lop set
+        ho = '$object->ho',
+        ten = '$object->ten'
         where
-            ma = '$ma'";
-    $result = mysqli_query($connect, $sql);
-    $each = mysqli_fetch_array($result);
-    mysqli_close($connect);
+        ma = '$object->ma'
+        ";
+        (new Connect())->execute($sql);
+    }
 
-    return $each;
-}
-
-function lop_update($ma, $ten){
-    $connect = connect();
-    $sql = "update lop
-        set
-            ten = '$ten'
+    public function destroy($ma): void
+    {
+        $sql = "delete from lop 
         where
-            ma = '$ma'";
-    mysqli_query($connect, $sql);
-    mysqli_close($connect);
-}
-
-function lop_delete($ma){
-    $connect = connect();
-    $sql = "delete from lop
-        where
-            ma = '$ma'";
-    mysqli_query($connect, $sql);
-    mysqli_close($connect);
+        ma = '$ma'
+        ";
+        (new Connect())->execute($sql);
+    }
 }
