@@ -2,14 +2,14 @@
 
 class Connect
 {
-    private $host = 'localhost';
+    private $server = 'localhost';
     private $user = 'root';
     private $pass = '';
-    private $database = 'j2school';
+    private $db = 'j2school';
 
     private function cnt()
     {
-        $connect = mysqli_connect($this->host, $this->user, $this->pass, $this->database);
+        $connect = mysqli_connect('localhost','root','','j2school');
         mysqli_set_charset($connect, 'utf8');
 
         return $connect;
