@@ -1,18 +1,25 @@
 <?php
 
 require_once 'model/Connect.php';
-require 'model/LopObject.php';
+require 'model/SinhVienObject.php';
 
-class Lop
+class SinhVien
 {
+    private string $table = 'sinh_vien';
+
     public function all(): array
     {
-        $sql    = "select * from lop";
+        $sql    = "select 
+        t.*,
+        lop.ten as ten_lop
+        from $this->table as t
+        join lop
+        on lop.ma = t.ma_lop";
         $result = (new Connect())->select($sql);
 
         $arr = [];
         foreach ($result as $row) {
-            $object = new LopObject($row);
+            $object = new SinhVienObject($row);
 
             $arr[] = $object;
         }
@@ -22,30 +29,30 @@ class Lop
 
     public function create($params): void
     {
-        $object = new LopObject($params);
+        $object = new SinhVienObject($params);
 
-        $sql = "insert into lop(ho,ten)
-            values('" . $object->get_ho() . "','" . $object->get_ten() . "')";
+        $sql = "insert into $this->table (ten,ma_lop)
+            values('" . $object->get_ten() . "','" . $object->get_ma_lop() . "')";
         (new Connect())->execute($sql);
     }
 
     public function find($ma): object
     {
-        $sql = "select * from lop
+        $sql = "select * from $this->table
             where ma = '$ma'";
         $result = (new Connect())->select($sql);
         $each = mysqli_fetch_array($result);
 
-        return new LopObject($each);
+        return new SinhVienObject($each);
     }
 
     public function update(array $params): void
     {
-        $object = new LopObject($params);
+        $object = new SinhVienObject($params);
 
-        $sql = "update lop
+        $sql = "update $this->table
         set
-        ho = '" . $object->get_ho()."',
+        ma_lop = '" . $object->get_ma_lop()."',
         ten = '" . $object->get_ten()."'
         where
         ma = '" . $object->get_ma()."'
@@ -55,7 +62,7 @@ class Lop
 
     public function delete($ma): void
     {
-        $sql = "delete from lop
+        $sql = "delete from $this->table
             where ma = '$ma'";
         (new Connect())->execute($sql);
     }
